@@ -1,0 +1,220 @@
+# Bite&Bed Website
+
+This is a React-based website for Bite&Bed, a platform that connects tourists with locals for immersive cultural experiences and home-cooked meals.
+
+## Project Structure
+```
+bitebed/
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Features.jsx
+│   │   ├── Hosts.jsx
+│   │   ├── Experiences.jsx
+│   │   ├── Testimonials.jsx
+│   │   ├── HostProfile.jsx
+│   │   ├── Booking.jsx
+│   │   ├── Login.jsx
+│   │   ├── Signup.jsx
+│   │   ├── Search.jsx
+│   │   ├── NotFound.jsx
+│   │   ├── Loading.jsx
+│   │   ├── Notification.jsx
+│   │   ├── AnimatedSection.jsx
+│   │   ├── Card.jsx
+│   │   ├── Button.jsx
+│   │   ├── Modal.jsx
+│   │   ├── Image.jsx
+│   │   ├── StarRating.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── Breadcrumb.jsx
+│   │   ├── Pagination.jsx
+│   │   ├── Filter.jsx
+│   │   ├── Sort.jsx
+│   │   ├── Tabs.jsx
+│   │   ├── Accordion.jsx
+│   │   ├── ProgressBar.jsx
+│   │   ├── Tooltip.jsx
+│   │   ├── Avatar.jsx
+│   │   ├── Badge.jsx
+│   │   ├── Divider.jsx
+│   │   ├── Skeleton.jsx
+│   │   ├── Alert.jsx
+│   │   ├── Form.jsx
+│   │   ├── List.jsx
+│   │   ├── Stat.jsx
+│   │   ├── Timeline.jsx
+│   │   ├── Carousel.jsx
+│   │   ├── Drawer.jsx
+│   │   ├── Stepper.jsx
+│   │   ├── Chip.jsx
+│   │   ├── Popover.jsx
+│   │   ├── Table.jsx
+│   │   ├── Tag.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── Footer.jsx
+│   ├── context/
+│   │   └── AppContext.jsx
+│   ├── utils/
+│   │   └── helpers.js
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── vite.config.js
+└── Readme
+```
+
+## Technologies Used
+- React 18
+- Vite
+- Tailwind CSS
+- React Router
+- React Context API
+- CSS Animations
+- Responsive design
+
+## Color Palette
+- Primary: Warm Coral (#F15B38)
+- Primary Hover: Terracotta Tint (#F97A56)
+- Secondary/Background: Soft Cream (#F7F3EC)
+- Accent: Soft Clay (#E4C9B0)
+- Text (Primary): Midnight Charcoal (#1C1C1C)
+- Text (Secondary): Deep Gray (#3C3C3C)
+- Alt Background: White Smoke (#FAF8F5)
+
+## Pages Overview
+
+### Home Page (/)
+- Hero section with search functionality
+- Features section explaining how Bite&Bed works
+- Hosts showcase
+- Experiences showcase
+- Testimonials from travelers
+
+### Search Page (/search)
+- Advanced search form with location, dates, and guests
+- Popular destinations
+
+### Hosts Page (/hosts)
+- Grid of local hosts with ratings and specialties
+
+### Experiences Page (/experiences)
+- Grid of local experiences with pricing and ratings
+
+### Host Profile Page (/host-profile)
+- Detailed host information
+- Host's experiences
+- Reviews from previous travelers
+
+### Booking Page (/booking)
+- Experience details
+- Date and time selection
+- Guest count
+- Price calculation
+
+### Authentication Pages
+- Login page (/login)
+- Signup page (/signup)
+
+### Utility Pages
+- 404 Not Found page
+- Loading component
+- Notification component
+
+## Components
+- Header with navigation
+- Hero section with search
+- Features section
+- Hosts showcase
+- Experiences showcase
+- Testimonials section
+- Footer with links
+- Loading indicator
+- Notification system
+- Animated sections
+- Reusable Card component
+- Reusable Button component
+- Modal component for dialogs
+- Optimized Image component
+- Star Rating component
+- Search Bar component
+- Breadcrumb navigation component
+- Pagination component
+- Filter component
+- Sort component
+- Tabs component
+- Accordion component
+- Progress Bar component
+- Tooltip component
+- Avatar component
+- Badge component
+- Divider component
+- Skeleton component
+- Alert component
+- Form component
+- List component
+- Stat component
+- Timeline component
+- Carousel component
+- Drawer component
+- Stepper component
+- Chip component
+- Popover component
+- Table component
+- Tag component
+- Navbar component
+- Sidebar component
+- Footer component
+
+## Context API
+- Global state management for user authentication
+- Notification system
+- Loading states
+- Search filters
+
+## Utilities
+- Currency formatting
+- Date formatting
+- Text truncation
+- Email validation
+- Password validation
+- Price calculation
+- Random image URL generation
+
+## Animations
+- Fade-in-up animations for content sections
+- Smooth transitions between states
+- Hover effects on interactive elements
+
+## Getting Started
+To run the website locally:
+1. Install dependencies: `npm install`
+2. Start the development server: `npm run dev`
+
+## Features
+- Fully responsive design that works on mobile, tablet, and desktop
+- Clean, intuitive UX inspired by Airbnb
+- Warm, authentic Mediterranean brand through color, typography, and imagery
+- Focus on connection, storytelling, and trust
+- React Router for client-side navigation
+- Tailwind CSS for rapid UI development
+- Reusable components for consistent UI
+- Error handling with 404 page
+- Loading states for better UX
+- Global state management with Context API
+- Utility functions for common tasks
+- Subtle animations for enhanced user experience
+- Reusable Card, Button, Modal, Image, Star Rating, Search Bar, Breadcrumb, Pagination, Filter, Sort, Tabs, Accordion, Progress Bar, Tooltip, Avatar, Badge, Divider, Skeleton, Alert, Form, List, Stat, Timeline, Carousel, Drawer, Stepper, Chip, Popover, Table, Tag, Navbar, Sidebar, and Footer components for consistent design
+- Optimized image loading with lazy loading support
+
+## Deployment
+The website can be deployed to any static hosting service like Vercel, Netlify, or GitHub Pages.
