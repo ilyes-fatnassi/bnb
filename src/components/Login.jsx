@@ -19,9 +19,15 @@ const Login = () => {
     
     try {
       setIsLoading(true);
-      const { user } = await signIn(email, password);
-      loginUser(user);
-      navigate('/dashboard');
+      const { user, session } = await signIn(email, password);
+      
+      if (user) {
+        loginUser(user);
+        addNotification('Successfully logged in!', 'success');
+        navigate('/');
+      } else {
+        addNotification('Login failed. Please try again.', 'error');
+      }
     } catch (error) {
       console.error('Login error:', error);
       addNotification(error.message || 'Failed to log in. Please check your credentials.', 'error');

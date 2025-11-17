@@ -91,7 +91,6 @@ export const AppProvider = ({ children }) => {
   // Login user (now handled by Supabase in Login component)
   const loginUser = (userData) => {
     setUser(userData);
-    addNotification('Welcome back!', 'success');
   };
 
   // Logout user
@@ -109,7 +108,6 @@ export const AppProvider = ({ children }) => {
   // Signup user (now handled by Supabase in Signup component)
   const signupUser = (userData) => {
     setUser(userData);
-    addNotification('Welcome to Bite&Bed!', 'success');
   };
 
   const value = {

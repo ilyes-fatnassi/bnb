@@ -27,10 +27,15 @@ const Signup = () => {
 
     try {
       setIsLoading(true);
-      const { user } = await signUp(email, password, name);
-      signupUser(user);
-      addNotification('Account created! Please check your email to verify.', 'success');
-      navigate('/dashboard');
+      const { user, session } = await signUp(email, password, name);
+      
+      if (user) {
+        signupUser(user);
+        addNotification('Account created successfully! Welcome to Bite&Bed!', 'success');
+        navigate('/');
+      } else {
+        addNotification('Failed to create account. Please try again.', 'error');
+      }
     } catch (error) {
       console.error('Signup error:', error);
       addNotification(error.message || 'Failed to create account', 'error');
