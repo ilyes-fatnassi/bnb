@@ -91,6 +91,9 @@ const Signup = () => {
                 placeholder="••••••••"
                 required
               />
+              <p className="mt-2 text-xs text-gray-500">
+                💡 Use a unique password. If your browser warns about a data breach, it means that password was used elsewhere - create a new one for better security.
+              </p>
             </div>
             
             <div className="mb-6">
