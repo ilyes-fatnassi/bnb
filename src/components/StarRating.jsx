@@ -17,7 +17,7 @@ const StarRating = ({ rating, maxRating = 5, size = 'md' }) => {
         <svg 
           key={`full-${i}`} 
           xmlns="http://www.w3.org/2000/svg" 
-          className={`${sizeClasses[size]} text-coral`} 
+          className={`${sizeClasses[size]} text-primary-500`} 
           viewBox="0 0 20 20" 
           fill="currentColor"
         >
@@ -28,7 +28,7 @@ const StarRating = ({ rating, maxRating = 5, size = 'md' }) => {
       {hasHalfStar && (
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className={`${sizeClasses[size]} text-coral`} 
+          className={`${sizeClasses[size]} text-primary-500`} 
           viewBox="0 0 20 20" 
           fill="currentColor"
         >
@@ -40,7 +40,7 @@ const StarRating = ({ rating, maxRating = 5, size = 'md' }) => {
         <svg 
           key={`empty-${i}`} 
           xmlns="http://www.w3.org/2000/svg" 
-          className={`${sizeClasses[size]} text-clay`} 
+          className={`${sizeClasses[size]} text-gray-300`} 
           viewBox="0 0 20 20" 
           fill="currentColor"
         >
@@ -48,7 +48,7 @@ const StarRating = ({ rating, maxRating = 5, size = 'md' }) => {
         </svg>
       ))}
       
-      <span className="ml-1 text-gray text-sm">{rating.toFixed(1)}</span>
+      <span className="ml-1 text-gray-600 text-sm">{rating.toFixed(1)}</span>
     </div>
   );
 };

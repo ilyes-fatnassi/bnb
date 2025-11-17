@@ -11,10 +11,10 @@ const Button = ({
   const baseClasses = 'font-semibold rounded-full transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   const variantClasses = {
-    primary: 'bg-coral hover:bg-coralLight text-white focus:ring-coral',
-    secondary: 'bg-whitesmoke hover:bg-cream text-charcoal focus:ring-clay border border-clay',
-    outline: 'border-2 border-coral text-coral hover:bg-coral hover:text-white focus:ring-coral',
-    ghost: 'text-coral hover:bg-cream focus:ring-coral'
+    primary: 'bg-primary-500 hover:bg-primary-600 text-white focus:ring-primary-500',
+    secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-900 focus:ring-gray-500 border border-gray-300',
+    outline: 'border-2 border-primary-500 text-primary-600 hover:bg-primary-500 hover:text-white focus:ring-primary-500',
+    ghost: 'text-primary-600 hover:bg-gray-100 focus:ring-primary-500'
   };
   
   const sizeClasses = {

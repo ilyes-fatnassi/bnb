@@ -1,15 +1,53 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Modal from './Modal';
+import Button from './Button';
+import { signIn, resetPassword } from '../services/api';
+import { useAppContext } from '../context/AppContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { loginUser, addNotification } = useAppContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, this would connect to a backend
-    console.log('Login attempt with:', { email, password });
-    alert('Login functionality would be implemented in a real application');
+    
+    try {
+      setIsLoading(true);
+      const { user } = await signIn(email, password);
+      loginUser(user);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      addNotification(error.message || 'Failed to log in. Please check your credentials.', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!resetEmail) {
+      addNotification('Please enter your email address', 'error');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await resetPassword(resetEmail);
+      addNotification(`Password reset link sent to ${resetEmail}`, 'success');
+      setShowForgotPassword(false);
+      setResetEmail('');
+    } catch (error) {
+      console.error('Password reset error:', error);
+      addNotification(error.message || 'Failed to send reset email', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -57,14 +95,21 @@ const Login = () => {
                 />
                 <label htmlFor="remember" className="ml-2 text-gray">Remember me</label>
               </div>
-              <Link to="/forgot-password" className="text-coral hover:underline">Forgot password?</Link>
+              <button 
+                type="button"
+                onClick={() => setShowForgotPassword(true)} 
+                className="text-coral hover:underline"
+              >
+                Forgot password?
+              </button>
             </div>
             
             <button
               type="submit"
-              className="w-full bg-coral hover:bg-coralLight text-white py-3 rounded-lg font-semibold transition"
+              disabled={isLoading}
+              className="w-full bg-coral hover:bg-coralLight text-white py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
           
@@ -76,6 +121,43 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      <Modal
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+        title="Reset Password"
+        size="md"
+        actions={
+          <>
+            <Button variant="secondary" onClick={() => setShowForgotPassword(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleForgotPassword}>
+              Send Reset Link
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-gray-600">
+            Enter your email address and we'll send you a link to reset your password.
+          </p>
+          <div>
+            <label htmlFor="reset-email" className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="reset-email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="your@email.com"
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

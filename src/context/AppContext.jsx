@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import Notification from '../components/Notification';
+import { supabase } from '../lib/supabase';
+import { getCurrentUser, signOut as apiSignOut } from '../services/api';
 
 const AppContext = createContext();
 
@@ -13,13 +16,51 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with true to check auth
   const [searchFilters, setSearchFilters] = useState({
     location: '',
     checkin: '',
     checkout: '',
     guests: 1
   });
+
+  // Check for existing session on mount
+  useEffect(() => {
+    console.log('AppContext: Starting auth initialization');
+    const initAuth = async () => {
+      try {
+        console.log('AppContext: Getting current user');
+        const currentUser = await getCurrentUser();
+        console.log('AppContext: Current user:', currentUser);
+        setUser(currentUser);
+      } catch (error) {
+        console.error('AppContext: Error checking auth:', error);
+        // Don't block the app if auth check fails
+      } finally {
+        console.log('AppContext: Setting loading to false');
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+
+    // Listen for auth changes
+    try {
+      const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+        }
+      });
+
+      return () => {
+        authListener?.subscription?.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error setting up auth listener:', error);
+    }
+  }, []);
 
   // Add notification
   const addNotification = (message, type = 'info') => {
@@ -47,19 +88,25 @@ export const AppProvider = ({ children }) => {
     setSearchFilters(prev => ({ ...prev, ...filters }));
   };
 
-  // Login user
+  // Login user (now handled by Supabase in Login component)
   const loginUser = (userData) => {
     setUser(userData);
     addNotification('Welcome back!', 'success');
   };
 
   // Logout user
-  const logoutUser = () => {
-    setUser(null);
-    addNotification('You have been logged out', 'info');
+  const logoutUser = async () => {
+    try {
+      await apiSignOut();
+      setUser(null);
+      addNotification('You have been logged out', 'info');
+    } catch (error) {
+      console.error('Logout error:', error);
+      addNotification('Error logging out', 'error');
+    }
   };
 
-  // Signup user
+  // Signup user (now handled by Supabase in Signup component)
   const signupUser = (userData) => {
     setUser(userData);
     addNotification('Welcome to Bite&Bed!', 'success');
@@ -82,6 +129,17 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={value}>
       {children}
+      {/* Render notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {notifications.map((notification) => (
+          <Notification
+            key={notification.id}
+            message={notification.message}
+            type={notification.type}
+            onClose={() => removeNotification(notification.id)}
+          />
+        ))}
+      </div>
     </AppContext.Provider>
   );
 };

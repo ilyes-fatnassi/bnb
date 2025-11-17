@@ -1,21 +1,42 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signUp } from '../services/api';
+import { useAppContext } from '../context/AppContext';
 
 const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { signupUser, addNotification } = useAppContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      addNotification('Passwords do not match', 'error');
       return;
     }
-    // In a real app, this would connect to a backend
-    console.log('Signup attempt with:', { name, email, password });
-    alert('Signup functionality would be implemented in a real application');
+
+    if (password.length < 6) {
+      addNotification('Password must be at least 6 characters', 'error');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const { user } = await signUp(email, password, name);
+      signupUser(user);
+      addNotification('Account created! Please check your email to verify.', 'success');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Signup error:', error);
+      addNotification(error.message || 'Failed to create account', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -83,9 +104,10 @@ const Signup = () => {
             <div className="mb-6">
               <button
                 type="submit"
-                className="w-full bg-coral hover:bg-coralLight text-white py-3 rounded-lg font-semibold transition"
+                disabled={isLoading}
+                className="w-full bg-coral hover:bg-coralLight text-white py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Create Account
+                {isLoading ? 'Creating Account...' : 'Create Account'}
               </button>
             </div>
           </form>

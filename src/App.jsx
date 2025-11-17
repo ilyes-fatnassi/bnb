@@ -1,62 +1,64 @@
-import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { useAppContext } from './context/AppContext'
-import './App.css'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Features from './components/Features'
-import Hosts from './components/Hosts'
-import Experiences from './components/Experiences'
-import Testimonials from './components/Testimonials'
-import HostProfile from './components/HostProfile'
-import Booking from './components/Booking'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Search from './components/Search'
-import NotFound from './components/NotFound'
-import Loading from './components/Loading'
-import Notification from './components/Notification'
-import Footer from './components/Footer'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useAppContext } from './context/AppContext';
+import './App.css';
+
+// Components
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import Hosts from './components/Hosts';
+import ListingDetail from './components/ListingDetail';
+import Experiences from './components/Experiences';
+import Testimonials from './components/Testimonials';
+import Meals from './components/Meals';
+import BecomeHost from './components/BecomeHost';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
+import Footer from './components/Footer';
+import NotFound from './components/NotFound';
+import Loading from './components/Loading';
 
 function App() {
-  const { notifications, removeNotification, loading } = useAppContext();
+  const { loading } = useAppContext();
 
+  console.log('App rendering - loading:', loading);
+
+  if (loading) {
+    console.log('Showing loading screen');
+    return <Loading />;
+  }
+
+  console.log('Showing main app');
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      {loading && <Loading />}
-      {notifications.map(notification => (
-        <Notification
-          key={notification.id}
-          message={notification.message}
-          type={notification.type}
-          onClose={() => removeNotification(notification.id)}
-        />
-      ))}
-      <main>
+      
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={
-            <>
+            <div>
               <Hero />
               <Features />
               <Hosts />
-              <Experiences />
               <Testimonials />
-            </>
+            </div>
           } />
-          <Route path="/search" element={<Search />} />
-          <Route path="/hosts" element={<Hosts />} />
+          <Route path="/meals" element={<Meals />} />
           <Route path="/experiences" element={<Experiences />} />
-          <Route path="/host-profile" element={<HostProfile />} />
-          <Route path="/booking" element={<Booking />} />
+          <Route path="/become-host" element={<BecomeHost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/listing/:id" element={<ListingDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+
       <Footer />
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
