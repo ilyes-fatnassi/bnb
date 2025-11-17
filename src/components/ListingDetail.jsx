@@ -15,6 +15,7 @@ const ListingDetail = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [type, setType] = useState('meal'); // Default to meal
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -69,6 +70,49 @@ const ListingDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-20">
+      {/* Full Photos Modal */}
+      {showAllPhotos && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto"
+          onClick={() => setShowAllPhotos(false)}
+        >
+          <div className="min-h-screen px-4 py-20">
+            <button
+              onClick={() => setShowAllPhotos(false)}
+              className="fixed top-4 right-4 text-white hover:text-gray-300 transition-colors z-50"
+            >
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="max-w-5xl mx-auto">
+              <h2 className="text-white text-2xl font-bold mb-6">{listing.title} - All Photos</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {listingImages.map((image, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-gray-900 rounded-lg overflow-hidden"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image}
+                      alt={`${listing.title} ${index + 1}`}
+                      className="w-full h-auto object-cover"
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* Image Gallery */}
       <div className="relative w-full bg-gray-100 mb-8">
         <div className="container mx-auto px-4">
@@ -78,7 +122,8 @@ const ListingDetail = () => {
               <Image
                 src={listingImages[0] || 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80'}
                 alt={listing.title}
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-cover rounded-lg cursor-pointer"
+                onClick={() => setShowAllPhotos(true)}
               />
             </div>
             {/* Show only first 2 additional images (total 3 images shown) */}
@@ -88,18 +133,22 @@ const ListingDetail = () => {
                   key={index}
                   src={image}
                   alt={`${listing.title} ${index + 2}`}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-lg cursor-pointer"
+                  onClick={() => setShowAllPhotos(true)}
                 />
               ))}
             </div>
           </div>
-          {/* Show all photos button - only if there are more than 3 images */}
-          {listingImages.length > 3 && (
+          {/* Show all photos button - only if there are more than 1 image */}
+          {listingImages.length > 1 && (
             <button
-              onClick={() => window.alert(`Gallery feature coming soon! This listing has ${listingImages.length} photos.`)}
-              className="absolute bottom-8 right-8 px-4 py-2 bg-white rounded-lg shadow-md text-sm font-medium hover:bg-gray-50 hover:shadow-lg transition-all z-10"
+              onClick={() => setShowAllPhotos(true)}
+              className="absolute bottom-8 right-8 px-4 py-2 bg-white rounded-lg shadow-md text-sm font-medium hover:bg-gray-50 hover:shadow-lg transition-all z-10 flex items-center space-x-2"
             >
-              Show all {listingImages.length} photos
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Show all {listingImages.length} photos</span>
             </button>
           )}
         </div>
