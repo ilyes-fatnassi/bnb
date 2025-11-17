@@ -6,8 +6,9 @@ import { useAppContext } from '../context/AppContext';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
-  const { user } = useAppContext();
+  const { user, logoutUser } = useAppContext();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,20 +68,45 @@ const Header = () => {
                 Become a Host
               </Link>
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/dashboard"
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
                     className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     <img
-                      src={user.avatar || 'https://ui-avatars.com/api/?name=' + user.name}
+                      src={user.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user_metadata?.full_name || user.email)}`}
                       alt="Profile"
                       className="w-8 h-8 rounded-full"
                     />
                     <span className="text-sm font-medium text-gray-700">
-                      {user.name}
+                      {user.user_metadata?.full_name || user.email?.split('@')[0]}
                     </span>
-                  </Link>
+                    <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logoutUser();
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >
+                        Log out
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center space-x-2">
@@ -161,7 +187,22 @@ const Header = () => {
                 >
                   Become a Host
                 </Link>
-                {!user && (
+                {user ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="px-4 py-2 text-gray-600 hover:text-primary-600 rounded-lg hover:bg-gray-50"
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={logoutUser}
+                      className="px-4 py-2 text-red-600 hover:text-red-700 rounded-lg hover:bg-gray-50 text-left"
+                    >
+                      Log out
+                    </button>
+                  </>
+                ) : (
                   <>
                     <Link
                       to="/login"
