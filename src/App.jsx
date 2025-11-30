@@ -20,6 +20,13 @@ import Footer from './components/Footer';
 import NotFound from './components/NotFound';
 import Loading from './components/Loading';
 
+// Host Components
+import HostLayout from './components/host/HostLayout';
+import HostDashboard from './components/host/HostDashboard';
+import AddMeal from './components/host/AddMeal';
+import HostMealsList from './components/host/HostMealsList';
+import HostBookings from './components/host/HostBookings';
+
 function App() {
   const { loading } = useAppContext();
 
@@ -50,8 +57,21 @@ function App() {
           <Route path="/become-host" element={<BecomeHost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/listing/:id" element={<ListingDetail />} />
+          
+          {/* Host Routes - Must come before /dashboard */}
+          <Route path="/host" element={<HostLayout />}>
+            <Route index element={<HostDashboard />} />
+            <Route path="dashboard" element={<HostDashboard />} />
+            <Route path="meals" element={<HostMealsList />} />
+            <Route path="meals/add" element={<AddMeal />} />
+            <Route path="meals/edit/:id" element={<AddMeal />} />
+            <Route path="bookings" element={<HostBookings />} />
+          </Route>
+          
+          {/* User Dashboard */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -90,11 +90,11 @@ const Header = () => {
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                       <Link
-                        to="/dashboard"
+                        to="/host/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowUserMenu(false)}
                       >
-                        Dashboard
+                        Host Dashboard
                       </Link>
                       <button
                         onClick={() => {
@@ -190,10 +190,10 @@ const Header = () => {
                 {user ? (
                   <>
                     <Link
-                      to="/dashboard"
+                      to="/host/dashboard"
                       className="px-4 py-2 text-gray-600 hover:text-primary-600 rounded-lg hover:bg-gray-50"
                     >
-                      Dashboard
+                      Host Dashboard
                     </Link>
                     <button
                       onClick={logoutUser}
