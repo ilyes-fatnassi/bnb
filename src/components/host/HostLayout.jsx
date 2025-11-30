@@ -9,6 +9,7 @@ const HostLayout = () => {
   const navigation = [
     { name: 'Dashboard', path: '/host/dashboard', icon: '📊' },
     { name: 'My Meals', path: '/host/meals', icon: '🍽️' },
+    { name: 'My Experiences', path: '/host/experiences', icon: '🎭' },
     { name: 'Bookings', path: '/host/bookings', icon: '📅' },
     { name: 'Profile', path: '/host/profile', icon: '👤' },
   ];

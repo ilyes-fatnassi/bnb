@@ -25,10 +25,20 @@ export const getMealById = async (id) => {
       .eq('id', id)
       .single();
     
-    if (error) throw error;
+    // If not found (PGRST116 error), return null instead of throwing
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return null;
+      }
+      throw error;
+    }
     return data;
   } catch (error) {
     console.error('Error fetching meal:', error);
+    // Return null for not found, otherwise throw
+    if (error.code === 'PGRST116') {
+      return null;
+    }
     throw error;
   }
 };
@@ -58,10 +68,20 @@ export const getExperienceById = async (id) => {
       .eq('id', id)
       .single();
     
-    if (error) throw error;
+    // If not found (PGRST116 error), return null instead of throwing
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return null;
+      }
+      throw error;
+    }
     return data;
   } catch (error) {
     console.error('Error fetching experience:', error);
+    // Return null for not found, otherwise throw
+    if (error.code === 'PGRST116') {
+      return null;
+    }
     throw error;
   }
 };
@@ -366,6 +386,56 @@ export const getHostBookings = async (hostId) => {
   } catch (error) {
     console.error('Error fetching host bookings:', error);
     return [];
+  }
+};
+
+// ============= EXPERIENCE CRUD =============
+
+export const createExperience = async (experienceData) => {
+  try {
+    const { data, error } = await supabase
+      .from('experiences')
+      .insert([experienceData])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error creating experience:', error);
+    throw error;
+  }
+};
+
+export const updateExperience = async (experienceId, experienceData) => {
+  try {
+    const { data, error } = await supabase
+      .from('experiences')
+      .update(experienceData)
+      .eq('id', experienceId)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error updating experience:', error);
+    throw error;
+  }
+};
+
+export const deleteExperience = async (experienceId) => {
+  try {
+    const { error } = await supabase
+      .from('experiences')
+      .delete()
+      .eq('id', experienceId);
+    
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error deleting experience:', error);
+    throw error;
   }
 };
 

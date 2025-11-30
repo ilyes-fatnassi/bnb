@@ -25,6 +25,8 @@ import HostLayout from './components/host/HostLayout';
 import HostDashboard from './components/host/HostDashboard';
 import AddMeal from './components/host/AddMeal';
 import HostMealsList from './components/host/HostMealsList';
+import AddExperience from './components/host/AddExperience';
+import HostExperiencesList from './components/host/HostExperiencesList';
 import HostBookings from './components/host/HostBookings';
 
 function App() {
@@ -66,6 +68,9 @@ function App() {
             <Route path="meals" element={<HostMealsList />} />
             <Route path="meals/add" element={<AddMeal />} />
             <Route path="meals/edit/:id" element={<AddMeal />} />
+            <Route path="experiences" element={<HostExperiencesList />} />
+            <Route path="experiences/add" element={<AddExperience />} />
+            <Route path="experiences/edit/:id" element={<AddExperience />} />
             <Route path="bookings" element={<HostBookings />} />
           </Route>
           

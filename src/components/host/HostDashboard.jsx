@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
-import { getHostByUserId, getHostMeals, getHostBookings } from '../../services/api';
+import { getHostByUserId, getHostMeals, getHostBookings, getHostExperiences } from '../../services/api';
 import Loading from '../Loading';
 
 const HostDashboard = () => {
@@ -36,6 +36,9 @@ const HostDashboard = () => {
         // Get host's meals
         const meals = await getHostMeals(hostData.id);
         
+        // Get host's experiences
+        const experiences = await getHostExperiences(hostData.id);
+        
         // Get host's bookings
         const bookings = await getHostBookings(hostData.id);
         setRecentBookings(bookings.slice(0, 5)); // Latest 5
@@ -43,7 +46,7 @@ const HostDashboard = () => {
         // Calculate stats
         setStats({
           totalMeals: meals.length,
-          totalExperiences: 0, // Phase 2
+          totalExperiences: experiences.length,
           totalBookings: bookings.length,
           avgRating: hostData.rating || 0
         });
@@ -142,10 +145,17 @@ const HostDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
             to="/host/meals/add"
-            className="flex items-center justify-center space-x-3 px-6 py-4 bg-primary-50 text-primary-600 rounded-lg font-medium hover:bg-primary-100 transition-colors"
+            className="flex items-center justify-center space-x-3 px-6 py-4 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
           >
             <span className="text-2xl">➕</span>
             <span>Add New Meal</span>
+          </Link>
+          <Link
+            to="/host/experiences/add"
+            className="flex items-center justify-center space-x-3 px-6 py-4 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
+          >
+            <span className="text-2xl">🎭</span>
+            <span>Add New Experience</span>
           </Link>
           <Link
             to="/host/bookings"
